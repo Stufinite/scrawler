@@ -23,12 +23,12 @@ class NchuSpider(scrapy.Spider):
 		"O":[],
 		"W":[]
 	}
+	def __init__(self):
+		Course.objects.all().delete()
 
 	def parse(self, response):
 		import json
 		data = json.loads(response.text)
-
-		Course.objects.all().delete()
 
 		CourseList = []
 		CodeSet = set()
@@ -74,11 +74,8 @@ class NchuSpider(scrapy.Spider):
 						)
 					)
 			except Exception as e:
-				print('----------------------')
-				print(response.url)
 				print(str(e))
-				print('----------------------')
-
+				
 		return {'array':CourseList}
 
 	def truncateNewLineSpace(self, line):
