@@ -32,7 +32,6 @@ class NchuSpider(scrapy.Spider):
 			# truncate invalid char to turn it into json
 			jsonStr = ""
 			for line in f:
-				print(111)
 				tmp = truncateNewLineSpace(line)
 				jsonStr +=tmp
 			return jsonStr
@@ -90,4 +89,4 @@ class NchuSpider(scrapy.Spider):
 			except Exception as e:
 				print(e)
 
-		return {'array':CourseList}
+		return {'array':CourseList, 'json':data["course"]}
