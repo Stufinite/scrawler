@@ -15,25 +15,39 @@ class NchuSpider(scrapy.Spider):
 		'https://onepiece.nchu.edu.tw/cofsys/plsql/json_for_course?p_career=O'
 	]
 
-	errCourse = {
-		"U":[],
-		"G":[],
-		"D":[],
-		"N":[],
-		"O":[],
-		"W":[]
-	}
 	def __init__(self):
 		Course.objects.all().delete()
+		self.CodeSet = set()
+		self.school='NCHU'
+		self.semester = '1052'
 
 	def parse(self, response):
+		def validateTmpJson(self, tmpFile):
+			def truncateNewLineSpace(line):
+				tmp = ""
+				for i in line:
+					if i != "\n" and i != " ":
+						tmp+=i
+				return tmp
+			# truncate invalid char to turn it into json
+			jsonStr = ""
+			for line in f:
+				print(111)
+				tmp = truncateNewLineSpace(line)
+				jsonStr +=tmp
+			return jsonStr
+
 		import json
-		data = json.loads(response.text)
+		try:
+			data = json.loads(response.text)
+		except Exception as e:
+			try:
+				data = json.loads(self.validateTmpJson(response.text, d))
+			except Exception as e:
+				print(e)    
+				raise e
 
 		CourseList = []
-		CodeSet = set()
-		school='NCHU'
-		semester = '1052'
 
 		for c in data["course"]:
 			try:
@@ -46,14 +60,14 @@ class NchuSpider(scrapy.Spider):
 					time = time[:-1]
 					time += ','
 
-				if c['code'] not in CodeSet:
-					CodeSet.add(c['code'])
+				if c['code'] not in self.CodeSet:
+					self.CodeSet.add(c['code'])
 
 					CourseList.append( 
 						Course(
 							**CampasscrawlerItem(
-								school=school.upper(),
-								semester=str(semester),
+								school=self.school.upper(),
+								semester=str(self.semester),
 								code=c['code'],
 								credits=c['credits'],
 								title='{},{}'.format(
@@ -74,57 +88,6 @@ class NchuSpider(scrapy.Spider):
 						)
 					)
 			except Exception as e:
-				print(str(e))
-				
+				print(e)
+
 		return {'array':CourseList}
-
-	def truncateNewLineSpace(self, line):
-		tmp = ""
-		for i in line:
-			if i != "\n" and i != " ":
-				tmp+=i
-		return tmp
-
-	def validateTmpJson(self, tmpFile, degree):
-		# truncate invalid char to turn it into json
-		jsonStr = ""
-		with open('json/'+tmpFile, 'r', encoding='UTF-8') as f:
-			for line in f:
-				tmp = self.truncateNewLineSpace(line)
-				jsonStr +=tmp
-		jsonStr = self.checkDegree(jsonStr, degree)
-		return jsonStr
-
-	def checkDegree(self, jsonStr, degree):
-		# correct those Course which were placed in wrong degree dict.
-		jsonDict = json.loads(jsonStr)
-		degreeTable = {"U":["1","2","3","4","5","1A","1B","2A","2B","3A","3B", "4A", "4B", "5A", "5B"],"G":["6", "7"], "D":["8", "9"], "N":["1","2","3","4","5"],"O":["0","1","2","3","4","5"], "W":["6", "7"]}
-		cleanDict = {'course':[]}
-		for index, value in enumerate(jsonDict['course']):
-			if value['class'] not in degreeTable[degree]:
-				if value['class'] in degreeTable['D']:
-					self.errCourse['D'].append(value)
-				elif '在職' in value['for_dept'] or '碩士專班' in value['for_dept']:
-					self.errCourse['W'].append(value)
-				elif '碩士' in value['for_dept'] :
-					self.errCourse['G'].append(value)
-				elif '進修' in value['for_dept']:
-					self.errCourse['N'].append(value)
-				elif value['class'] in degreeTable['U']:
-					self.errCourse['U'].append(value)
-				elif value['class'] == 0 or value['for_dept'].find('全校共同')!=-1:
-					self.errCourse['O'].append(value)
-				elif '研究所' in value['for_dept']:
-					self.errCourse['G'].append(value)
-				else:
-					print(value)
-					raise Exception('clean ERR')
-			elif degree == 'G':
-				if '碩士專班' in value['for_dept']:
-					self.errCourse['W'].append(value)
-				else:
-					cleanDict['course'].append(value)
-			else:
-				cleanDict['course'].append(value)
-
-		return json.dumps(cleanDict)
