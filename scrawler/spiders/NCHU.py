@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from campasscrawler.items import CampasscrawlerItem
+from scrawler.items import ScrawlerItem
 from timetable.models import Course
 
 class NchuSpider(scrapy.Spider):
@@ -64,7 +64,7 @@ class NchuSpider(scrapy.Spider):
 
 					CourseList.append( 
 						Course(
-							**CampasscrawlerItem(
+							**ScrawlerItem(
 								school=self.school.upper(),
 								semester=str(self.semester),
 								code=c['code'],

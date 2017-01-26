@@ -9,7 +9,7 @@ import scrapy
 from scrapy_djangoitem import DjangoItem
 from timetable.models import Course
 
-class CampasscrawlerItem(DjangoItem):
+class ScrawlerItem(DjangoItem):
     # define the fields for your item here like:
     # name = scrapy.Field()
     django_model = Course
