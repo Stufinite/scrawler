@@ -8,11 +8,11 @@ class NchuSpider(scrapy.Spider):
 	allowed_domains = ["onepiece.nchu.edu.tw/cofsys/plsql/json_for_course?p_career="]
 	start_urls = [
 		'https://onepiece.nchu.edu.tw/cofsys/plsql/json_for_course?p_career=W',
-		'https://onepiece.nchu.edu.tw/cofsys/plsql/json_for_course?p_career=U',
-		'https://onepiece.nchu.edu.tw/cofsys/plsql/json_for_course?p_career=G',
-		'https://onepiece.nchu.edu.tw/cofsys/plsql/json_for_course?p_career=D',
-		'https://onepiece.nchu.edu.tw/cofsys/plsql/json_for_course?p_career=N',
-		'https://onepiece.nchu.edu.tw/cofsys/plsql/json_for_course?p_career=O'
+		# 'https://onepiece.nchu.edu.tw/cofsys/plsql/json_for_course?p_career=U',
+		# 'https://onepiece.nchu.edu.tw/cofsys/plsql/json_for_course?p_career=G',
+		# 'https://onepiece.nchu.edu.tw/cofsys/plsql/json_for_course?p_career=D',
+		# 'https://onepiece.nchu.edu.tw/cofsys/plsql/json_for_course?p_career=N',
+		# 'https://onepiece.nchu.edu.tw/cofsys/plsql/json_for_course?p_career=O'
 	]
 
 	def __init__(self):
@@ -43,7 +43,7 @@ class NchuSpider(scrapy.Spider):
 			try:
 				data = json.loads(self.validateTmpJson(response.text, d))
 			except Exception as e:
-				print(e)    
+				print('fuck----------------------------------')    
 				raise e
 
 		CourseList = []
@@ -87,6 +87,6 @@ class NchuSpider(scrapy.Spider):
 						)
 					)
 			except Exception as e:
-				print(e)
+				print('fuck----------------------------------')
 
 		return {'array':CourseList, 'json':data["course"]}
