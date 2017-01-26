@@ -6,16 +6,16 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 from scrapy_djangoitem import DjangoItem
-from campasscrawler.items import CampasscrawlerItem
+from scrawler.items import ScrawlerItem
 from timetable.models import Course
 
-class CampasscrawlerPipeline(object):
+class ScrawlerPipeline(object):
 	def __init__(self):
 		self.item = 0
 		self.AllJson = []
 
 	def process_item(self, item, spider):
-		CampasscrawlerItem.django_model.objects.bulk_create(item['array'])
+		ScrawlerItem.django_model.objects.bulk_create(item['array'])
 
 		self.item += 1
 		self.AllJson += item['json']
@@ -39,9 +39,9 @@ class import2Mongo(object):
 		self.DeptCollect.remove({})
 		self.CourseOfTime.remove({})
 
-		self.chgTable = dict(tuple((dept['name'], dept['value']) for degree in json.load(open('campasscrawler/spiders/NCHU/department.json', 'r')) for dept in degree['department']))
+		self.chgTable = dict(tuple((dept['name'], dept['value']) for degree in json.load(open('scrawler/spiders/NCHU/department.json', 'r')) for dept in degree['department']))
 		self.degreeTable = {}
-		for degree in json.load(open('campasscrawler/spiders/NCHU/department.json', 'r')):
+		for degree in json.load(open('scrawler/spiders/NCHU/department.json', 'r')):
 			for d in degree['department']:
 				self.degreeTable.setdefault(d['name'], []).append(degree['degree'])
 
