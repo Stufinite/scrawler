@@ -43,7 +43,7 @@ class NchuSpider(scrapy.Spider):
 			try:
 				data = json.loads(self.validateTmpJson(response.text, d))
 			except Exception as e:
-				print('fuck----------------------------------')    
+				print(e)    
 				raise e
 
 		CourseList = []
@@ -87,6 +87,6 @@ class NchuSpider(scrapy.Spider):
 						)
 					)
 			except Exception as e:
-				print('fuck----------------------------------')
+				print(e)
 
 		return {'array':CourseList, 'json':data["course"]}
