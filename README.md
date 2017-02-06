@@ -76,6 +76,7 @@ start sleep
 ## Built With
 
 * Scrapy
+* scrapy-djangoitem
 
 ## Contributors
 
