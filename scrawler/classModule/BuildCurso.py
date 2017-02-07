@@ -10,7 +10,6 @@ class BuildCurso(object):
 		self.school = school
 		
 	def BuildIndex(self):
-		self.SrchCollect.remove({})
 		def bigram(title):
 			bigram = (title.split(',')[0], title.split(',')[1].replace('.', ''))
 			title = re.sub(r'\(.*\)', '', title.split(',')[0]).split()[0].strip()
@@ -36,6 +35,9 @@ class BuildCurso(object):
 			tmp.setdefault(CourseCode, set()).add(CourseCode)
 
 		result = tuple( {'key':key, self.school:list(value)} for key, value in tmp.items() if key != '' and key!=None)
+
+		self.SrchCollect.remove({})
+		
 		self.SrchCollect.insert(result)
 		self.SrchCollect.create_index([("key", pymongo.HASHED)])
 

@@ -11,8 +11,6 @@ class import2Mongo(object):
 		self.db = self.client['timetable']
 		self.DeptCollect = self.db['CourseOfDept']
 		self.CourseOfTime = self.db['CourseOfTime']
-		self.DeptCollect.remove({})
-		self.CourseOfTime.remove({})
 
 		self.chgTable = dict(tuple((dept['name'], dept['value']) for degree in json.load(open('scrawler/spiders/NCHU/department.json', 'r')) for dept in degree['department']))
 		self.degreeTable = {}
@@ -66,6 +64,9 @@ class import2Mongo(object):
 			result[dept][oblAttr].setdefault(grade, []).append(code)
 
 		resultList = tuple( dict(dept=dept, course=course, school='NCHU') for dept, course in result.items())
+
+		self.DeptCollect.remove({})
+		
 		self.DeptCollect.insert(resultList)
 		self.CourseOfTime.create_index([("school", pymongo.ASCENDING),("dept", pymongo.ASCENDING)])
 
@@ -87,6 +88,9 @@ class import2Mongo(object):
 						result[day][t].setdefault(degree, {}).setdefault(self.getDeptCode(course['for_dept'], course['class']), []).append(course['code'])
 
 		resultList = tuple(dict(school='NCHU', day=d, time=t, value=codeArr) for d in result for t, codeArr in result[d].items())
+
+		self.CourseOfTime.remove({})
+
 		self.CourseOfTime.insert(resultList)
 		self.CourseOfTime.create_index([("school", pymongo.ASCENDING),("day", pymongo.ASCENDING), ('time',pymongo.ASCENDING)])
 
