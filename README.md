@@ -23,7 +23,8 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisities
 
 1. OS：Ubuntu / OSX would be nice
-2. environment：need python3 `sudo apt-get update; sudo apt-get install; python3 python3-dev`
+2. environment：need python3 + mongoDB  
+`sudo apt-get update; sudo apt-get install; python3 python3-dev`
 
 ### Installing
 
@@ -35,32 +36,39 @@ These instructions will get you a copy of the project up and running on your loc
     2. for Windows：`venv\Scripts\activate`
 3. `pip install -r requirements.txt`
 
+## 行前須知：
+1. 請確保`mongodb`是啟動的，啟動mongoDB的指令為  
+  * ubuntu：`sudo systemctl start mongod.service`  
+  * macOS：`不確定`
+2. `scralwer/settings.py`的96行，請更新`cal`專案在該環境的絕對路徑，否則會無法存取資料到`cal`的資料庫中。
+
+
 ## Running & Testing
 
 ## Run
 
-1. `nohup python run.py &`  
+* `scrapy crawl NCHU`：個人開發時使用
+* `nohup python run.py &`：佈署到伺服器時使用  
+  因為`run.py`是一個無限回圈，所以讓他在背景執行即可  
+  效果：看到`start sleep`且上方沒有任何`error`就是正常  
+  ```
+    以上省略多行
+    ...
+   'item_scraped_count': 6,
+   'log_count/DEBUG': 14,
+   'log_count/INFO': 7,
+   'response_received_count': 7,
+   'scheduler/dequeued': 6,
+   'scheduler/dequeued/memory': 6,
+   'scheduler/enqueued': 6,
+   'scheduler/enqueued/memory': 6,
+   'start_time': datetime.datetime(2017, 2, 6, 13, 48, 44, 579855)}
+  2017-02-06 21:48:53 [scrapy.core.engine] INFO: Spider closed (finished)
+  -----------------------------------
+  start sleep
+  -----------------------------------
 
-因為`run.py`是一個無限回圈，所以讓他在背景執行即可  
-效果：看到`start sleep`且上方沒有任何`error`就是正常  
-```
-  以上省略多行
-  ...
- 'item_scraped_count': 6,
- 'log_count/DEBUG': 14,
- 'log_count/INFO': 7,
- 'response_received_count': 7,
- 'scheduler/dequeued': 6,
- 'scheduler/dequeued/memory': 6,
- 'scheduler/enqueued': 6,
- 'scheduler/enqueued/memory': 6,
- 'start_time': datetime.datetime(2017, 2, 6, 13, 48, 44, 579855)}
-2017-02-06 21:48:53 [scrapy.core.engine] INFO: Spider closed (finished)
------------------------------------
-start sleep
------------------------------------
-
-```
+  ```
 
 ### Break down into end to end tests
 
