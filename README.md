@@ -23,8 +23,12 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisities
 
 1. OS：Ubuntu / OSX would be nice
-2. environment：need python3 + mongoDB  
+2. environment：need python3
 `sudo apt-get update; sudo apt-get install; python3 python3-dev`
+3. 需要`mongoDB`:
+  * Ubuntu:請看這篇[安裝教學](https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-16-04)
+  * mac：請看這篇[安裝教學](https://blog.gtwang.org/mac-os-x/mac-os-x-install-mongodb-database/)
+
 
 ### Installing
 
