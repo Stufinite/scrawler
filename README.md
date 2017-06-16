@@ -51,8 +51,8 @@ These instructions will get you a copy of the project up and running on your loc
 
 ## Run
 
-* `scrapy crawl NCHU`：個人開發時使用
-* `nohup python run.py &`：佈署到伺服器時使用  
+* `scrapy crawl NCHU -a semester=學期(1061 or 1062 or ...)`：個人開發時使用
+* `nohup python run.py 學期(1061 or 1062 or ...) &`：佈署到伺服器時使用  
   因為`run.py`是一個無限回圈，所以讓他在背景執行即可  
   效果：看到`start sleep`且上方沒有任何`error`就是正常  
   ```

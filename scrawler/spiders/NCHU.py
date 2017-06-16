@@ -15,11 +15,11 @@ class NchuSpider(scrapy.Spider):
 		'https://onepiece.nchu.edu.tw/cofsys/plsql/json_for_course?p_career=O'
 	]
 
-	def __init__(self):
+	def __init__(self, semester):
 		Course.objects.all().delete()
 		self.CodeSet = set()
 		self.school='NCHU'
-		self.semester = '1052'
+		self.semester = semester
 
 	def parse(self, response):
 		def validateTmpJson(self, tmpFile):

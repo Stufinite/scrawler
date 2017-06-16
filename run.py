@@ -1,7 +1,7 @@
-import subprocess, time
+import subprocess, time, sys
 
 while True:
-	subprocess.call(['scrapy', 'crawl', 'NCHU'])
+	subprocess.call(['scrapy', 'crawl', 'NCHU', '-a', 'semester='+sys.argv[1]])
 	print('-----------------------------------')
 	print('start sleep')
 	print('-----------------------------------')
