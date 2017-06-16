@@ -28,7 +28,10 @@ These instructions will get you a copy of the project up and running on your loc
 3. 需要`mongoDB`:
   * Ubuntu:請看這篇[安裝教學](https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-16-04)
   * mac：請看這篇[安裝教學](https://blog.gtwang.org/mac-os-x/mac-os-x-install-mongodb-database/)
-
+4. lxml dependencies
+`sudo apt-get install libxml2-dev libxslt-dev`
+5. cryptography dependencies
+`sudo apt-get install libssl-dev libffi-dev`
 
 ### Installing
 

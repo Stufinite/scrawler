@@ -5,3 +5,4 @@ cphelper
 Scrapy==1.3.0
 scrapy-djangoitem==1.1.1
 Twisted<16.7
+mysqlclient
