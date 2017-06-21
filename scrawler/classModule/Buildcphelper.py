@@ -24,9 +24,7 @@ class import2Mongo(object):
 		return document
 
 	def getDeptCode(self, deptName, grade):
-		if len(grade) > 1:
-			deptName = deptName + ' ' + grade[-1].upper()
-		return self.chgTable.get(deptName, False)
+		return self.chgTable[deptName]
 
 	def BuildByDept(self, jsonDict):
 		def getClass(grade):
@@ -88,12 +86,16 @@ class import2Mongo(object):
 						result[day][t].setdefault(degree, {}).setdefault(self.getDeptCode(course['for_dept'], course['class']), []).append(course['code'])
 
 		resultList = tuple(dict(school='NCHU', day=d, time=t, value=codeArr) for d in result for t, codeArr in result[d].items())
-
 		self.CourseOfTime.remove({})
 
 		self.CourseOfTime.insert(resultList)
 		self.CourseOfTime.create_index([("school", pymongo.ASCENDING),("day", pymongo.ASCENDING), ('time',pymongo.ASCENDING)])
 
 	def save2DB(self, AllJson):
+		def cleanjsonDict(jsonDict):
+			for i in jsonDict:
+				if i['class'][-1].isalpha():
+					i['for_dept'] += ' {}'.format(i['class'][-1])
+		cleanjsonDict(AllJson)
 		self.BuildByDept(AllJson)
 		self.BuildByTime(AllJson)
