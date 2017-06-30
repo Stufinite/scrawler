@@ -45,7 +45,7 @@ class NchuSpider(scrapy.Spider):
 			except Exception as e:
 				print(e)    
 				raise e
-
+		json.dump(data, open('{}.json'.format(response.url.split('?p_career=')[-1]), 'w'))
 		CourseList = []
 
 		for c in data["course"]:
@@ -88,5 +88,6 @@ class NchuSpider(scrapy.Spider):
 					)
 			except Exception as e:
 				print(e)
+				raise e
 
 		return {'array':CourseList, 'json':data["course"]}
