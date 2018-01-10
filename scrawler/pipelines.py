@@ -21,7 +21,7 @@ class ScrawlerPipeline(object):
 
 		self.item += 1
 		self.AllJson += item['json']
-		if self.item == 6:
+		if self.item == 4:
 			i = import2Mongo()
 			i.save2DB(self.AllJson)
 
