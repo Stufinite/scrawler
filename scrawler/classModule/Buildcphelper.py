@@ -24,7 +24,10 @@ class import2Mongo(object):
 		return document
 
 	def getDeptCode(self, deptName, grade):
-		return self.chgTable[deptName]
+		try:
+			return self.chgTable[deptName]
+		except Exception as e:
+			return False
 
 	def BuildByDept(self, jsonDict):
 		def getClass(grade):
@@ -94,8 +97,9 @@ class import2Mongo(object):
 	def save2DB(self, AllJson):
 		def cleanjsonDict(jsonDict):
 			for i in jsonDict:
-				if i['class'][-1].isalpha():
+				if len(i['class']) and i['class'][-1].isalpha():
 					i['for_dept'] += ' {}'.format(i['class'][-1])
+
 		cleanjsonDict(AllJson)
 		self.BuildByDept(AllJson)
 		self.BuildByTime(AllJson)
